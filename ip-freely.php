@@ -54,8 +54,9 @@ add_action( 'plugins_loaded', 'ip_freely_update_db_check' );
 function do_this() {
 
     global $wpdb;
-    $userName = $_POST['signup_username'];
-    $emailAddr = $_POST['signup_email'];
+    
+    $userName = sanitize_text_field($_POST['signup_username']);
+    $emailAddr = sanitize_text_field($_POST['signup_email']);
     $ipAddrForward = $_SERVER['HTTP_X_FORWARDED_FOR'];
     $ipAddr = $_SERVER['REMOTE_ADDR'];
 
