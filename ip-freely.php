@@ -3,7 +3,7 @@
  * Plugin Name: IP Freely
  * Plugin URI: http://wellrootedmedia.com/plugins/ip-freely
  * Description: This is to block IP's
- * Version: 0.0.0
+ * Version: 0.0.4
  * Author: Well Rooted Media
  * Author URI: http://wellrootedmedia.com
  * License: GPL2
