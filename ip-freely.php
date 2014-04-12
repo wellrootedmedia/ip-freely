@@ -88,10 +88,3 @@ function custom_bp_after_registration_confirmed() {
     }
 }
 
-add_action('bp_before_register_page', 'custom_bp_before_register_page');
-function custom_bp_before_register_page() {
-    global $wpdb;
-    $mylink = $wpdb->get_row("SELECT ipAddrFwrd, ipAddr FROM $wpdb->ip_freely");
-    echo $mylink->link_id; // prints "10"
-
-}
