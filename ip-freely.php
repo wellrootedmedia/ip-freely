@@ -22,22 +22,6 @@ function ip_freely_install() {
 
     $table_name = $wpdb->prefix . "ip_freely";
 
-//    $installed_ver = get_option( "ip_freely_install" );
-//    if( $installed_ver != $ip_freely_version ) {
-//        $sql = "ALTER TABLE $table_name (
-//        id mediumint(9) NOT NULL AUTO_INCREMENT,
-//        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-//        ipAddrFwrd varchar(45) DEFAULT NULL,
-//        ipAddr varchar(45) DEFAULT NULL,
-//        userName varchar(255) DEFAULT NULL,
-//        emailAddr varchar(255) DEFAULT NULL,
-//        UNIQUE KEY id (id)
-//        );";
-//        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-//        dbDelta( $sql );
-//        update_option( "ip_freely_install", $ip_freely_version );
-//    }
-
     $sql = "CREATE TABLE $table_name (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         ipAddrFwrd varchar(45) DEFAULT NULL,
@@ -64,27 +48,9 @@ function ip_freely_update_db_check() {
     }
 }
 
-add_action('bp_after_registration_confirmed', 'custom_bp_after_registration_confirmed');
-function custom_bp_after_registration_confirmed() {
-
-    global $wpdb;
-
-    $userName = sanitize_text_field($_POST['signup_username']);
-    $emailAddr = sanitize_text_field($_POST['signup_email']);
-    $ipAddrForward = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    $ipAddr = $_SERVER['REMOTE_ADDR'];
-
-    if($userName) {
-        $wpdb->insert(
-            $wpdb->prefix . "ip_freely",
-            array(
-                'userName' => $userName,
-                'emailAddr' => $emailAddr,
-                'ipAddrFwrd' => $ipAddrForward,
-                'ipAddr' => $ipAddr,
-                'time' => date("Y-m-d H:i:s")
-            )
-        );
-    }
-}
+/*
+ * put the include for the action-add-registration.php file
+ */
+foreach ( glob( plugin_dir_path( __FILE__ ) . "inc/*.php" ) as $file )
+    include_once $file;
 
