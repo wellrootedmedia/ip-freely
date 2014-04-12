@@ -15,6 +15,7 @@
 global $ip_freely_version;
 $ip_freely_version = "0.0.4";
 
+register_activation_hook( __FILE__, 'ip_freely_install' );
 function ip_freely_install() {
     global $wpdb;
     global $ip_freely_version;
@@ -54,17 +55,17 @@ function ip_freely_install() {
 
     add_option( "ip_freely_install", $ip_freely_version );
 }
-register_activation_hook( __FILE__, 'ip_freely_install' );
 
+add_action( 'plugins_loaded', 'ip_freely_update_db_check' );
 function ip_freely_update_db_check() {
     global $ip_freely_version;
     if (get_site_option( 'ip_freely_install' ) != $ip_freely_version) {
         ip_freely_install();
     }
 }
-add_action( 'plugins_loaded', 'ip_freely_update_db_check' );
 
-function do_this() {
+add_action('bp_after_registration_confirmed', 'custom_bp_after_registration_confirmed');
+function custom_bp_after_registration_confirmed() {
 
     global $wpdb;
 
@@ -86,4 +87,11 @@ function do_this() {
         );
     }
 }
-add_action('bp_after_registration_confirmed', 'do_this');
+
+add_action('bp_before_register_page', 'custom_bp_before_register_page');
+function custom_bp_before_register_page() {
+    global $wpdb;
+    $mylink = $wpdb->get_row("SELECT ipAddrFwrd, ipAddr FROM $wpdb->ip_freely");
+    echo $mylink->link_id; // prints "10"
+
+}
