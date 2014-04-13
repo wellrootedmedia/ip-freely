@@ -16,7 +16,9 @@ global $ip_freely_version;
 $ip_freely_version = "0.0.4";
 
 register_activation_hook( __FILE__, 'ip_freely_install' );
+
 function ip_freely_install() {
+
     global $wpdb;
     global $ip_freely_version;
 
@@ -38,15 +40,17 @@ function ip_freely_install() {
     dbDelta( $sql );
 
     add_option( "ip_freely_install", $ip_freely_version );
+
 }
 
-add_action( 'plugins_loaded', 'ip_freely_update_db_check' );
 function ip_freely_update_db_check() {
+
     global $ip_freely_version;
     if (get_site_option( 'ip_freely_install' ) != $ip_freely_version) {
         ip_freely_install();
     }
-}
+
+} add_action( 'plugins_loaded', 'ip_freely_update_db_check' );
 
 /*
  * put the include for the action-add-registration.php file
@@ -54,3 +58,5 @@ function ip_freely_update_db_check() {
 foreach ( glob( plugin_dir_path( __FILE__ ) . "inc/*.php" ) as $file )
     include_once $file;
 
+foreach ( glob( plugin_dir_path( __FILE__ ) . "Classes/*.php" ) as $file )
+    include_once $file;
